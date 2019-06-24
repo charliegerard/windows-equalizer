@@ -4,7 +4,7 @@ const windowMinHeight = 163;
 const windowMinWidth = 187;
 const numWindows = Math.floor(resolutionWidth / windowMinWidth) + 1;
 let xCoordinateRightWindow = screen.availWidth - 163;
-let colors = ['#7FDBFF', '#01FF70', '#FFDC00', '#FF4136', '#B10DC9', '#DDDDDD', '#85144b'];
+let colors = ['#EC5256', '#68E6FB', '#8DE79F', '#EEFA64', '#ECBA4E', '#EF793E', '#ff73de','#FFFFFF'];
 
 let analyser, freqs, bufferLength, dataArray;
 let allWindows = [];
