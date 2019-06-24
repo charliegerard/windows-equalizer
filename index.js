@@ -1,15 +1,10 @@
-const resolutionHeight = screen.availHeight + 20;
 const resolutionWidth = screen.availWidth;
-const windowMinHeight = 163;
 const windowMinWidth = 187;
 const numWindows = Math.floor(resolutionWidth / windowMinWidth) + 1;
-let xCoordinateRightWindow = screen.availWidth - 163;
 let colors = ['#EC5256', '#68E6FB', '#8DE79F', '#EEFA64', '#ECBA4E', '#EF793E', '#ff73de','#FFFFFF'];
-
-let analyser, freqs, bufferLength, dataArray;
+let analyser, bufferLength, dataArray;
 let allWindows = [];
-let screenY, screenX;
-let base;
+let screenX, base;
 
 window.onload = () => {
     const button = document.getElementsByTagName('button')[0];
@@ -21,7 +16,7 @@ window.onload = () => {
             for(var i = 0; i < numWindows; i++){
                 allWindows.push(i);
                 screenX = (i === 0) ? 0 : allWindows[i-1].screenX + windowMinWidth;
-                allWindows[i] = window.open("windows/index1.html", `window-left${i}`, `location=1,status=1,scrollbars=1,width=100,height=100,screenX=${screenX},screenY=0`);
+                allWindows[i] = window.open("popup.html", `window-left${i}`, `location=1,status=1,scrollbars=1,width=100,height=100,screenX=${screenX},screenY=0`);
                 allWindows[i].document.writeln(`<body bgcolor='${colors[i]}'>`);
                 allWindows[i].document.writeln("<\/body>");
                 allWindows[i].document.close();
@@ -76,7 +71,6 @@ const startSound = () => {
         } catch (e) {
             console.log('Web Audio API is not supported');
         }
-
         analyser.smoothingTimeConstant = smoothing;
         source = ctx.createBufferSource();
         
@@ -89,11 +83,9 @@ const startSound = () => {
             ctx.decodeAudioData(event.target.response, function (buffer) {
                 source.buffer = buffer;
                 source.start(0, 0);
-
                 source.connect(analyser);
                 analyser.connect(ctx.destination);
                 analyser.fftSize = 256;
-
                 bufferLength = analyser.frequencyBinCount;
                 dataArray = new Uint8Array(bufferLength);
                 analyser.getByteTimeDomainData(dataArray);  
@@ -102,6 +94,5 @@ const startSound = () => {
         });
         req.send();
     }
-
     analyseAudio();
 }
