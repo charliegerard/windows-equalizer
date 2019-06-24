@@ -1,14 +1,13 @@
 const resolutionHeight = screen.availHeight + 20;
+const resolutionWidth = screen.availWidth;
 const windowMinHeight = 163;
-const windowMinWidth = 100;
-let windowOne, windowTwo, windowThree, windowFour, windowFive, windowSix;
-const numWindows = Math.floor(resolutionHeight / windowMinHeight);
-
+const windowMinWidth = 187;
+const numWindows = Math.floor(resolutionWidth / windowMinWidth) + 1;
 let xCoordinateRightWindow = screen.availWidth - 163;
-let colors = ['red', 'green', 'blue', 'white', 'grey', 'pink'];
+let colors = ['#7FDBFF', '#01FF70', '#FFDC00', '#FF4136', '#B10DC9', '#DDDDDD', '#85144b'];
 
 let analyser, freqs, bufferLength, dataArray;
-let allLeftWindows = [];
+let allWindows = [];
 let screenY, screenX;
 let base;
 
@@ -20,17 +19,19 @@ window.onload = () => {
 
         button.onclick = () => {    
             for(var i = 0; i < numWindows; i++){
-                allLeftWindows.push(i);
-                screenY = (i === 0) ? 0 : allLeftWindows[i-1].screenY + windowMinHeight;
-                allLeftWindows[i] = window.open("windows/index1.html", `window-left${i}`, `location=1,status=1,scrollbars=1,width=100,height=100,screenX=0,screenY=${screenY}`);
+                allWindows.push(i);
+                screenX = (i === 0) ? 0 : allWindows[i-1].screenX + windowMinWidth;
+                allWindows[i] = window.open("windows/index1.html", `window-left${i}`, `location=1,status=1,scrollbars=1,width=100,height=100,screenX=${screenX},screenY=0`);
+                allWindows[i].document.writeln(`<body bgcolor='${colors[i]}'>`);
+                allWindows[i].document.writeln("<\/body>");
+                allWindows[i].document.close();
             }
-            setColors();
             startSound();
         }
     } else {
         base = window.opener;
-        for(var i = 0; i < allLeftWindows.length; i++){
-            allLeftWindows[i] = base.allLeftWindows[i];
+        for(var i = 0; i < allWindows.length; i++){
+            allWindows[i] = base.allWindows[i];
         }
     }   
     
@@ -45,16 +46,22 @@ window.onload = () => {
     })
 } 
 
-const setColors = () => {
-    for(var i = 0; i < allLeftWindows.length; i++){
-        allLeftWindows[i].document.body.style.backgroundColor = 'pink';
-    }
-}
 const quit = () => {
-    for(var i = 0; i < allLeftWindows.length; i++){
-        allLeftWindows[i].close()
+    for(var i = 0; i < allWindows.length; i++){
+        allWindows[i].close()
     }
     window.cancelAnimationFrame(draw);
+}
+
+const draw = () => {
+    window.requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(dataArray);
+    let width;
+
+    for(var i = 0; i < numWindows; i++){
+        width = dataArray[i] * 1.5;
+        allWindows[i].resizeTo(allWindows[i].outerWidth, width);
+    }
 }
 
 const startSound = () => {
@@ -97,15 +104,4 @@ const startSound = () => {
     }
 
     analyseAudio();
-
-    const draw = () => {
-        window.requestAnimationFrame(draw);
-        analyser.getByteFrequencyData(dataArray);
-        let width;
-
-        for(var i = 0; i < numWindows; i++){
-            width = dataArray[i] * 1.5;
-            allLeftWindows[i].resizeTo(width, allLeftWindows[i].outerHeight);
-        }
-    }
 }
