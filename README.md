@@ -13,7 +13,7 @@ Following [this prototype](https://flappy-windows.netlify.com), I decided to pla
 * HTML
 * CSS
 * JavaScript
-* Web Audio AP
+* Web Audio API 🎉
 
 ## Good to know:
 
