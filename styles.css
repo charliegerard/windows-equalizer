@@ -16,6 +16,10 @@ main{
     width: 100%;
     justify-content: center;
     align-items: center;
+    height: 100%;
+position: absolute;
+top: 0;
+left: 0;
 }
 
 section{
@@ -73,4 +77,17 @@ footer{
     padding: 1.5em 0;
     font-family:  'Quicksand';
     font-size: .7em;
+}
+
+footer a{
+    color: white;
+}
+
+.mobile{
+    display: none;
+    position: absolute;
+    width: fit-content;
+    padding: 0 1em;
+    top: 40%;
+    margin: 0 auto;
 }
